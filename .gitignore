@@ -12,6 +12,7 @@
 *.so
 *.dll
 *.exe
+*.ui
 
 # Qt generated source files
 moc_*.cpp
