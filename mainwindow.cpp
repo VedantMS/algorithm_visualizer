@@ -9,12 +9,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 
     firstPage = new MainPage(this);
     linearSearchPage = new LinearSearch(this);
+    binarySearchPage = new BinarySearch(this);
 
     centralWidget->addWidget(firstPage);
     centralWidget->addWidget(linearSearchPage);
+    centralWidget->addWidget(binarySearchPage);
 
     connect(firstPage, &MainPage::search, this, &MainWindow::searchAlgorithm);
     connect(linearSearchPage, &LinearSearch::goBack, this, &MainWindow::goToMainPage);
+    connect(binarySearchPage, &BinarySearch::goBack, this, &MainWindow::goToMainPage);
 }
 
 MainWindow::~MainWindow() {
@@ -26,7 +29,9 @@ void MainWindow::searchAlgorithm(const QString &algorithm) {
         centralWidget->setCurrentWidget(linearSearchPage);
     }
 
-    //else if(algorithm == "Binary Search");
+    else if(algorithm == "Binary Search") {
+        centralWidget->setCurrentWidget(binarySearchPage);
+    }
 }
 
 void MainWindow::goToMainPage() {

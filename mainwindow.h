@@ -6,6 +6,7 @@
 #include "mainpage.h"
 
 #include "algorithms/search_algorithms/linearsearch.h"
+#include "algorithms/search_algorithms/binarysearch.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -30,7 +31,7 @@ class MainWindow : public QMainWindow {
         QStackedWidget *centralWidget;
         MainPage *firstPage;
         LinearSearch *linearSearchPage;
-
+        BinarySearch *binarySearchPage;
 };
 
 #endif // MAINWINDOW_H

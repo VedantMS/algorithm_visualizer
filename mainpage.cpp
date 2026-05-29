@@ -29,7 +29,7 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent), ui(new Ui::MainPage) {
     this->setLayout(layout);
 
     connect(searchBox, &QComboBox::textActivated, this, &MainPage::search);
-    //connect(sortBox, &QComboBox::currentIndexChanged, this, &MainPage::sort);
+    //connect(sortBox, &QComboBox::textActivated, this, &MainPage::sort);
 }
 
 MainPage::~MainPage() {

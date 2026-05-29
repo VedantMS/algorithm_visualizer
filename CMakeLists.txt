@@ -33,6 +33,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         algorithms/search_algorithms/linearsearch.h
         algorithms/search_algorithms/linearsearch.cpp
         algorithms/search_algorithms/linearsearch.ui
+        algorithms/search_algorithms/binarysearch.h algorithms/search_algorithms/binarysearch.cpp algorithms/search_algorithms/binarysearch.ui
 
 
     )
