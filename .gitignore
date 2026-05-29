@@ -1,0 +1,24 @@
+# Qt Creator user settings
+*.pro.user
+*.pro.user.*
+*.CMakeLists.txt.user
+*.CMakeLists.txt.user.*
+
+# Compiling outputs
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.exe
+
+# Qt generated source files
+moc_*.cpp
+ui_*.h
+qrc_*.cpp
+
+# Build directories (CMake / qmake)
+build*/
+*.Debug/
+*.Release/
