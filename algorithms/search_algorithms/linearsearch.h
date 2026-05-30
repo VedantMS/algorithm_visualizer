@@ -9,6 +9,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
+#include <QTextBlockFormat>
 #include <QTimer>
 
 namespace Ui {
@@ -38,7 +39,10 @@ class LinearSearch : public QWidget {
 
         QGraphicsScene *scene;
         QGraphicsView *view;
+
         QVector<QGraphicsRectItem *> array;
+
+        QGraphicsPolygonItem *arrayArrow;
 
         QTimer *timer;
 
@@ -47,6 +51,7 @@ class LinearSearch : public QWidget {
 
         void display();
         void drawArray();
+        void linearsearch();
 };
 
 #endif // LINEARSEARCH_H

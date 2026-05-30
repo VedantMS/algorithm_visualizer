@@ -58,6 +58,8 @@ void LinearSearch::on_acceptN_clicked() {
     acceptN->setDisabled(true);
 
     display();
+
+    linearsearch();
 }
 
 void LinearSearch::display() {
@@ -70,13 +72,53 @@ void LinearSearch::display() {
 }
 
 void LinearSearch::drawArray() {
+    QFont font("Times New Roman", 14);
+
     for(int i = 0; i < N; i++) {
-        QGraphicsRectItem *rect = new QGraphicsRectItem(i * 100, 0, 100, 50);
+        QGraphicsRectItem *rect = new QGraphicsRectItem(0, 0, 100, 50);
+
         rect->setBrush(Qt::cyan);
+        rect->setPos(i * 100, 0);
+
+        QString num = QString::number(data[i]);
+        QString indexText = QString::number(i);
+        QGraphicsSimpleTextItem *value = new QGraphicsSimpleTextItem(num, rect);
+        QGraphicsSimpleTextItem *index = new QGraphicsSimpleTextItem(indexText, rect);
+
+        value->setFont(font);
+        value->setBrush(Qt::black);
+
+        index->setFont(font);
+        index->setBrush(Qt::magenta);
+
+        qreal xoffset = (rect->rect().width() - value->boundingRect().width()) / 2;
+        qreal yoffset = (rect->rect().height() - value->boundingRect().height()) / 2;
+
+        value->setPos(xoffset, yoffset);
+        index->setPos(xoffset, rect->rect().height() + 20);
 
         scene->addItem(rect);
+        scene->addItem(index);
+
         array << rect;
     }
+}
 
+void LinearSearch::linearsearch() {
+    QPolygonF points = QPolygonF({QPointF(0, 0), QPointF(20, 0), QPointF(10, 15)});
+    arrayArrow = new QGraphicsPolygonItem(points);
+    arrayArrow->setBrush(Qt::magenta);
+    scene->addItem(arrayArrow);
 
+    for(int i = 0; i < N; i++) {
+        arrayArrow->setPos(40 + i * 100, -20);
+        array[i]->setBrush(Qt::blue);
+
+        if(val == data[i]) {
+            array[i]->setBrush(Qt::green);
+            break;
+        }
+
+        array[i]->setBrush(Qt::cyan);
+    }
 }
