@@ -24,7 +24,7 @@ class MainPage : public QWidget {
     private:
         Ui::MainPage *ui;
         QVBoxLayout *layout;
-        QLabel *title;
+        QLabel *l1, *l2;
         QComboBox *searchBox, *sortBox;
 };
 

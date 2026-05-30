@@ -7,7 +7,8 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent), ui(new Ui::MainPage) {
 
     layout = new QVBoxLayout(this);
 
-    title = new QLabel("Select Algorithm Type", this);
+    l1 = new QLabel("Select Search Algorithm", this);
+    l2 = new QLabel("Select Sort Algorithm", this);
 
     searchBox = new QComboBox(this);
     searchBox->addItem("Search Algorithms");
@@ -22,8 +23,9 @@ MainPage::MainPage(QWidget *parent) : QWidget(parent), ui(new Ui::MainPage) {
     sortBox->addItem("Quick Sort");
 
 
-    layout->addWidget(title);
+    layout->addWidget(l1);
     layout->addWidget(searchBox);
+    layout->addWidget(l2);
     layout->addWidget(sortBox);
 
     this->setLayout(layout);

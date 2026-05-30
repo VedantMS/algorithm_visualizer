@@ -6,8 +6,10 @@
 #include <QRadioButton>
 #include <QPushButton>
 #include <QSpinBox>
-#include <QtCore>
-#include <QtGui>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QGraphicsRectItem>
+#include <QTimer>
 
 namespace Ui {
 class LinearSearch;
@@ -33,11 +35,18 @@ class LinearSearch : public QWidget {
         QSpinBox *inputN;
         QPushButton *acceptN;
         QVector<int> data;
+
+        QGraphicsScene *scene;
+        QGraphicsView *view;
+        QVector<QGraphicsRectItem *> array;
+
+        QTimer *timer;
+
         int N = 0;
         int val = 0;
 
         void display();
-
+        void drawArray();
 };
 
 #endif // LINEARSEARCH_H

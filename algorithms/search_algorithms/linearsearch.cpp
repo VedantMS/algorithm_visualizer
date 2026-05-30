@@ -61,5 +61,22 @@ void LinearSearch::on_acceptN_clicked() {
 }
 
 void LinearSearch::display() {
+    scene = new QGraphicsScene(this);
+    view = new QGraphicsView(scene, this);
+
+    layout->addWidget(view);
+
+    drawArray();
+}
+
+void LinearSearch::drawArray() {
+    for(int i = 0; i < N; i++) {
+        QGraphicsRectItem *rect = new QGraphicsRectItem(i * 100, 0, 100, 50);
+        rect->setBrush(Qt::cyan);
+
+        scene->addItem(rect);
+        array << rect;
+    }
+
 
 }
