@@ -48,6 +48,9 @@ class LinearSearch : public QWidget {
 
         int N = 0;
         int val = 0;
+        int index = 0;
+
+        bool isChecked = false;
 
         void display();
         void drawArray();

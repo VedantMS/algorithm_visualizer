@@ -1,5 +1,6 @@
 #include "linearsearch.h"
 #include "algorithms/search_algorithms/ui_linearsearch.h"
+#include <QDebug>
 
 LinearSearch::LinearSearch(QWidget *parent) : QWidget(parent), ui(new Ui::LinearSearch) {
     ui->setupUi(this);
@@ -12,6 +13,8 @@ LinearSearch::LinearSearch(QWidget *parent) : QWidget(parent), ui(new Ui::Linear
 
     acceptN = new QPushButton("Enter Total Elements", this);
 
+    timer = new QTimer(this);
+
     layout->addWidget(goBackButton);
     layout->addWidget(inputN);
     layout->addWidget(acceptN);
@@ -20,6 +23,7 @@ LinearSearch::LinearSearch(QWidget *parent) : QWidget(parent), ui(new Ui::Linear
 
     connect(goBackButton, &QRadioButton::clicked, this, &LinearSearch::goBack);
     connect(acceptN, &QPushButton::clicked, this, &LinearSearch::on_acceptN_clicked);
+    connect(timer, &QTimer::timeout, this, &LinearSearch::linearsearch);
 }
 
 LinearSearch::~LinearSearch() {
@@ -58,8 +62,6 @@ void LinearSearch::on_acceptN_clicked() {
     acceptN->setDisabled(true);
 
     display();
-
-    linearsearch();
 }
 
 void LinearSearch::display() {
@@ -102,23 +104,45 @@ void LinearSearch::drawArray() {
 
         array << rect;
     }
+
+    QPolygonF points = QPolygonF({QPointF(0, 0), QPointF(20, 0), QPointF(10, 15)});
+    arrayArrow = new QGraphicsPolygonItem(points);
+
+    arrayArrow->setBrush(Qt::magenta);
+    arrayArrow->setPos(40, -20);
+
+    scene->addItem(arrayArrow);
+
+    timer->start(2000);
 }
 
 void LinearSearch::linearsearch() {
-    QPolygonF points = QPolygonF({QPointF(0, 0), QPointF(20, 0), QPointF(10, 15)});
-    arrayArrow = new QGraphicsPolygonItem(points);
-    arrayArrow->setBrush(Qt::magenta);
-    scene->addItem(arrayArrow);
+    if(index == N) {
+        array[index - 1]->setBrush(Qt::yellow);
 
-    for(int i = 0; i < N; i++) {
-        arrayArrow->setPos(40 + i * 100, -20);
-        array[i]->setBrush(Qt::blue);
+        arrayArrow->hide();
+        timer->stop();
 
-        if(val == data[i]) {
-            array[i]->setBrush(Qt::green);
-            break;
-        }
-
-        array[i]->setBrush(Qt::cyan);
+        return;
     }
+
+    arrayArrow->setPos(40 + index * 100, -20);
+
+    array[index]->setBrush(Qt::blue);
+
+    if(index > 0) {
+        array[index - 1]->setBrush(Qt::yellow);
+    }
+
+    if(val == data[index]) {
+        QTimer::singleShot(1000, this, [this](){
+            array[index]->setBrush(Qt::green);
+        });
+
+        timer->stop();
+
+        return;
+    }
+
+    index++;
 }
