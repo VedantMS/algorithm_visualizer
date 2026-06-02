@@ -8,7 +8,11 @@ BinarySearch::BinarySearch(QWidget *parent) : QWidget(parent), ui(new Ui::Binary
     goBackButton= new QRadioButton();
 
     inputN = new QSpinBox(this);
-    acceptN = new QPushButton("Enter", this);
+    inputN->clear();
+
+    acceptN = new QPushButton("Enter Total Elements", this);
+
+    timer = new QTimer(this);
 
     layout->addWidget(goBackButton);
     layout->addWidget(inputN);
@@ -18,6 +22,7 @@ BinarySearch::BinarySearch(QWidget *parent) : QWidget(parent), ui(new Ui::Binary
 
     connect(goBackButton, &QRadioButton::clicked, this, &BinarySearch::goBack);
     connect(acceptN, &QPushButton::clicked, this, &BinarySearch::on_acceptN_clicked);
+    connect(timer, &QTimer::timeout, this, &BinarySearch::binarysearch);
 }
 
 BinarySearch::~BinarySearch()
@@ -29,29 +34,135 @@ void BinarySearch::on_acceptN_clicked() {
     if(N == 0) {
         N = inputN->value();
 
-        if(N <= 0) {
+        if(N <= 0 || N > 10) {
+            QMessageBox::about(this, "Invalid Argument", "Total number of arguments cannot be <= 0 or > 10");
             return;
         }
 
         acceptN->setText("Enter Element");
-        inputN->setValue(0);
+        inputN->clear();
         return;
     }
 
     if(data.size() < N) {
         int element = inputN->value();
         data << element;
-        inputN->setValue(0);
+        inputN->clear();
+
+        if(data.size() == N) {
+            acceptN->setText("Enter Value to Find");
+        }
+
+        return;
     }
 
-    if(data.size() == N) {
-        inputN->setDisabled(true);
-        acceptN->setDisabled(true);
+    int element = inputN->value();
+    val = element;
 
-        display();
-    }
+    inputN->setDisabled(true);
+    acceptN->setDisabled(true);
+
+    display();
 }
 
 void BinarySearch::display() {
+    scene = new QGraphicsScene(this);
+    view = new QGraphicsView(scene, this);
 
+    layout->addWidget(view);
+
+    drawArray();
+}
+
+void BinarySearch::drawArray() {
+    QFont font("Times New Roman", 14);
+
+    for(int i = 0; i < N; i++) {
+        QGraphicsRectItem *rect = new QGraphicsRectItem(0, 0, 100, 50);
+
+        rect->setBrush(Qt::cyan);
+        rect->setPos(i * 100, 0);
+
+        QString num = QString::number(data[i]);
+        QString indexText = QString::number(i);
+        QGraphicsSimpleTextItem *value = new QGraphicsSimpleTextItem(num, rect);
+        QGraphicsSimpleTextItem *index = new QGraphicsSimpleTextItem(indexText, rect);
+
+        value->setFont(font);
+        value->setBrush(Qt::black);
+
+        index->setFont(font);
+        index->setBrush(Qt::magenta);
+
+        qreal xoffset = (rect->rect().width() - value->boundingRect().width()) / 2;
+        qreal yoffset = (rect->rect().height() - value->boundingRect().height()) / 2;
+
+        value->setPos(xoffset, yoffset);
+        index->setPos(xoffset, rect->rect().height() + 20);
+
+        scene->addItem(rect);
+
+        array << rect;
+    }
+
+    low = 0;
+    high = N - 1;
+    mid = low + (high - low) / 2;
+
+    QPolygonF points = QPolygonF({QPointF(0, 0), QPointF(20, 0), QPointF(10, 15)});
+    arrayArrowLow = new QGraphicsPolygonItem(points);
+    arrayArrowHigh = new QGraphicsPolygonItem(points);
+    arrayArrowMid = new QGraphicsPolygonItem(points);
+
+    arrayArrowLow->setBrush(Qt::magenta);
+    arrayArrowLow->setPos(40, -20);
+
+    arrayArrowHigh->setBrush(Qt::magenta);
+    arrayArrowHigh->setPos(40 + high * 100, -20);
+
+    arrayArrowMid->setBrush(Qt::magenta);
+    arrayArrowMid->setPos(40 + mid * 100, -20);
+
+    scene->addItem(arrayArrowLow);
+    scene->addItem(arrayArrowHigh);
+
+    QTimer::singleShot(2000, this, [this]{
+        scene->addItem(arrayArrowMid);
+    });
+
+    timer->start(4000);
+}
+
+void BinarySearch::binarysearch() {
+    if(low > high) {
+        arrayArrowLow->hide();
+        arrayArrowHigh->hide();
+        arrayArrowMid->hide();
+
+        timer->stop();
+        return;
+    }
+
+    if(data[mid] == val) {
+        array[mid]->setBrush(Qt::green);
+        timer->stop();
+        return;
+    }
+
+    if(data[mid] < val) {
+        low = mid + 1;
+        arrayArrowLow->setPos(40 + low * 100, -20);
+
+        array[low]->setBrush(Qt::blue);
+    }
+
+    else {
+        high = mid - 1;
+        arrayArrowHigh->setPos(40 + high * 100, -20);
+
+        array[high]->setBrush(Qt::blue);
+    }
+
+    mid = low + (high - low) / 2;
+    arrayArrowMid->setPos(40 + mid * 100, -20);
 }

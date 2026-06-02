@@ -34,7 +34,8 @@ void LinearSearch::on_acceptN_clicked() {
     if(N == 0) {
         N = inputN->value();
 
-        if(N <= 0) {
+        if(N <= 0 || N > 10) {
+            QMessageBox::about(this, "Invalid Argument", "Total number of arguments cannot be <= 0 or > 10");
             return;
         }
 
@@ -100,7 +101,6 @@ void LinearSearch::drawArray() {
         index->setPos(xoffset, rect->rect().height() + 20);
 
         scene->addItem(rect);
-        scene->addItem(index);
 
         array << rect;
     }
@@ -134,8 +134,8 @@ void LinearSearch::linearsearch() {
         array[index - 1]->setBrush(Qt::yellow);
     }
 
-    if(val == data[index]) {
-        QTimer::singleShot(1000, this, [this](){
+    if(data[index] == val) {
+        QTimer::singleShot(2000, this, [this](){
             array[index]->setBrush(Qt::green);
         });
 

@@ -6,6 +6,7 @@
 #include <QRadioButton>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QMessageBox>
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QGraphicsRectItem>
@@ -28,6 +29,7 @@ class LinearSearch : public QWidget {
 
     private slots:
         void on_acceptN_clicked();
+        void linearsearch();
 
     private:
         Ui::LinearSearch *ui;
@@ -50,11 +52,8 @@ class LinearSearch : public QWidget {
         int val = 0;
         int index = 0;
 
-        bool isChecked = false;
-
         void display();
         void drawArray();
-        void linearsearch();
 };
 
 #endif // LINEARSEARCH_H
