@@ -114,23 +114,32 @@ void BinarySearch::drawArray() {
     arrayArrowHigh = new QGraphicsPolygonItem(points);
     arrayArrowMid = new QGraphicsPolygonItem(points);
 
+    llabel = new QGraphicsSimpleTextItem("Low", arrayArrowLow);
+    hlabel = new QGraphicsSimpleTextItem("High", arrayArrowHigh);
+    mlabel = new QGraphicsSimpleTextItem("Mid", arrayArrowMid);
+
     arrayArrowLow->setBrush(Qt::magenta);
     arrayArrowLow->setPos(40, -20);
 
-    arrayArrowHigh->setBrush(Qt::magenta);
+    arrayArrowHigh->setBrush(Qt::darkMagenta);
     arrayArrowHigh->setPos(40 + high * 100, -20);
 
-    arrayArrowMid->setBrush(Qt::magenta);
+    arrayArrowMid->setBrush(Qt::green);
     arrayArrowMid->setPos(40 + mid * 100, -20);
+
+    mlabel->hide();
 
     scene->addItem(arrayArrowLow);
     scene->addItem(arrayArrowHigh);
 
     QTimer::singleShot(2000, this, [this]{
-        scene->addItem(arrayArrowMid);
-    });
+        array[mid]->setBrush(Qt::blue);
 
-    timer->start(4000);
+        scene->addItem(arrayArrowMid);
+        mlabel->show();
+
+        timer->start(2000);
+    });
 }
 
 void BinarySearch::binarysearch() {
@@ -143,26 +152,78 @@ void BinarySearch::binarysearch() {
         return;
     }
 
-    if(data[mid] == val) {
-        array[mid]->setBrush(Qt::green);
-        timer->stop();
-        return;
-    }
+    if(state) {
+        int num = mid;
+        mid = low + (high - low) / 2;
 
-    if(data[mid] < val) {
-        low = mid + 1;
-        arrayArrowLow->setPos(40 + low * 100, -20);
+        arrayArrowMid->setPos(40 + mid * 100, -20);
+        array[mid]->setBrush(Qt::blue);
+        array[num]->setBrush(Qt::yellow);
 
-        array[low]->setBrush(Qt::blue);
+
+
+        state = false;
     }
 
     else {
-        high = mid - 1;
-        arrayArrowHigh->setPos(40 + high * 100, -20);
+        if(data[mid] == val) {
+            array[mid]->setBrush(Qt::green);
+            timer->stop();
+            return;
+        }
 
-        array[high]->setBrush(Qt::blue);
+        if(data[mid] < val) {
+            int num = low;
+            low = mid + 1;
+
+            if(low <= high) {
+                arrayArrowLow->setPos(40 + low * 100, -20);
+
+                if(low == high) {
+                    llabel->setPos(0, -40);
+                }
+
+                else {
+                    llabel->setPos(0, -20);
+                }
+            }
+        }
+
+        else {
+            int num = high;
+            high = mid - 1;
+
+            if(low <= high) {
+                arrayArrowHigh->setPos(40 + high * 100, -20);
+
+                if(low == high) {
+                    hlabel->setPos(0, -40);
+                }
+
+                else {
+                    hlabel->setPos(0, -20);
+                }
+            }
+        }
+
+        state = true;
+    }
+}
+
+void BinarySearch::updateLabels() {
+    llabel->setPos(0, -20);
+    hlabel->setPos(0, -20);
+    mlabel->setPos(0, -20);
+
+    if(low == low && mid == high) {
+        mlabel->setPos(0, -60);
     }
 
-    mid = low + (high - low) / 2;
-    arrayArrowMid->setPos(40 + mid * 100, -20);
+    else if(mid == low || mid == high) {
+        mlabel->setPos(0, -40);
+    }
+
+    else {
+        mlabel->setPos(0, -20);
+    }
 }

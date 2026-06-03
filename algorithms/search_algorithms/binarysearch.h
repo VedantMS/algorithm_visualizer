@@ -49,6 +49,10 @@ class BinarySearch : public QWidget
         QGraphicsPolygonItem *arrayArrowHigh;
         QGraphicsPolygonItem *arrayArrowMid;
 
+        QGraphicsSimpleTextItem *llabel, *hlabel, *mlabel;
+
+        bool state = false;
+
         QTimer *timer;
 
         int N = 0;
@@ -57,6 +61,7 @@ class BinarySearch : public QWidget
 
         void display();
         void drawArray();
+        void updateLabels();
 };
 
 #endif // BINARYSEARCH_H
